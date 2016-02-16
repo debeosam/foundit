@@ -1,0 +1,69 @@
+@import url('css/bootstrap.min.css');
+#map{
+    width: 89%;
+    height: 500px;
+    margin: 20px auto;
+}
+
+.invisible {
+	display: none;
+}
+
+.fileUpload {
+	height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+legend {
+	margin-bottom: 0;
+	display: block;
+    width: 100%;
+    margin-top: 50px;
+    font-size: 21px;
+    line-height: inherit;
+    color: #333;
+    border-bottom: 2px solid transparent;
+    border-left: 4px solid transparent;
+    border-top: 2px;
+    border-right: 2px;
+    padding: 17px;
+    border-style: solid;
+    border-color: transparent;
+    transition: all ease-in .4s;
+    text-shadow: 0 3px 3px transparent;
+}
+
+legend:hover {
+    color: #2B2B2B;
+    border-style: solid;
+    transition: all ease-out .2s;
+    box-sizing: border-box;
+    text-decoration: underline;
+}
+
+
+#table-data {
+	height: 100%;
+	width: 100%;	
+	font-size: .8em;
+}
+
+.image {
+	height: 50px;
+	width: auto;
+}
+
+@media screen and (max-width: 480px) {
+	thead {
+		display: none;
+	}
+	td:before {
+		content: attr(thdata) ": ";
+		display: block;
+		
+	}
+}
