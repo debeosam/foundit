@@ -1,3 +1,71 @@
+        function parseCSV(table, csvInput) {
+            var i,
+                csv,
+                rows,
+                headers,
+                dataObject = {};
+            csv = $(csvInput).val();
+            csv = csv.replace(/\r\n/g, "\n");
+            csv = csv.replace(/\r/g, "\n");
+            rows = csv.split("\n");          
+            headers = rows.shift();
+            headers = headers.split(',');
+            debugger
+
+            for (k = 0; k < rows.length; k++) {
+                var r = rows[k] 
+                r = r.split(',');
+                for (i = 0; i < headers.length; i++) {
+                    dataObject[headers[i]] = r[i];
+                }
+            }
+
+
+
+            renderHeaders(headers, table);
+            renderTableData(rows, table)
+        }
+
+        function renderHeaders(headers, table) {
+            var thead = '', i;
+            thead += '<thead><tr>'
+            for (i = 0; i < headers.length; i++) {
+                thead += '<th>' + headers[i] + '</th>';
+            };
+            thead += '</tr></thead>';
+            $(table).append(thead);
+        }
+
+        function renderTableData(data, table) {
+            var tbody = '', row, i;
+            debugger
+            
+
+            tbody = '<tbody>';
+            for (i = 0; i < data.length; i++) {
+                row = renderRow(data[i]);    
+                tbody += row;
+            }
+            tbody += '</tbody>';
+
+            $(table).append(tbody);
+        }
+
+        function renderRow(row) {
+            var i, tr = '';
+            
+            row = row.split(',');
+
+            tr += '<tr>';
+
+            for (i = 0; i < row.length; i++) {
+                tr += '<td>' + row[i] + '</td>';
+            }
+
+            tr += '</tr>';
+            return tr;
+        }
+
         $(document).ready(function() {
                 var garageList = [],
                     locations = [];
@@ -13,16 +81,6 @@
                     return isCompatible;
                 }
 
-                function parseCSV() {
-                    var csv,
-                        rows,
-                        headers;
-                    csv = $('#csv').val();
-                    csv = csv.replace(/\r\n/g, "\n");
-                    csv = csv.replace(/\r/g, "\n");
-                    rows = csv.split("\n");          
-                    headers = rows.shift();
-                }
                 // Method that reads and processes the selected file
                 function upload(evt) {
                 if (!browserSupportFileUpload()) {
