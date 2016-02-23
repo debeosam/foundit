@@ -8,26 +8,49 @@
 	    <script src="https://maps.googleapis.com/maps/api/js" async defer></script>
 	</head>
 	<body>
-		<div id="dvImportSegments" class="fileupload ">
+		<div class="container">
+			<div class="col-md-7">
+				<h1>Found.It</h1>		
+				<h4>place where entrepreneurial minds meet</h4>
+				
+				<p class="separator-select">Select textarea separator: 	
+					<select name="chooseSeparator" id="chooseSeparator" class="dropdown">
+						<option value="comma">,</option>
+						<option value="semicolon">;</option>
+						<option value="tab">\t</option>
+					</select>
+				</p>
+				
+				<div id="dvImportSegments" class="fileupload ">
 
-			<h1>FoundIt</h1>		
-			<h4>place where minds meet</h4>
-			<textarea name="csv" id="csv" cols="30" rows="10">Id,Company Name,Founder,City,Country,Postal Code, Street,Photo,Home Page,Garage Latitude,Garage Longitude
+			<textarea name="csv" id="csv" cols="30" rows="10" class="form-control">Id,Company Name,Founder,City,Country,Postal Code, Street,Photo,Home Page,Garage Latitude,Garage Longitude
 1,Google,Larry Page & Sergey Brin,Mountain View,USA,CA 94043,1600 Amphitheatre Pkwy,http://interviewsummary.com/wp-content/uploads/2013/07/larry-page-and-sergey-brin-of-google-620x400.jpg,http://google.com,37.457674,-122.163452
 2,Apple,Steve Jobs & Steve Wozniak,Cupertino,USA,CA 95014,1 Infinite Loop,http://i.dailymail.co.uk/i/pix/2013/02/08/article-2275512-172E13BB000005DC-732_634x505.jpg,http://apple.com,37.3403188,-122.0581469
-3,Microsoft,Bill Gates,Redmond,USA,WA 98052-7329,One Microsoft Way,http://postdefiance.com/wp-content/uploads/2013/02/bill-gates-microsoft-young.jpg,http://microsoft.com,37.472189,-122.190191
-			</textarea>
-		    <fieldset>
+3,Microsoft,Bill Gates,Redmond,USA,WA 98052-7329,One Microsoft Way,http://i.dailymail.co.uk/i/pix/2011/06/10/article-2001697-0C816FEB00000578-38_306x423.jpg,http://microsoft.com,37.472189,-122.190191</textarea>
+			<!-- <textarea name="csv" id="csv" cols="30" rows="10">Id;Company Name;Founder;City;Country;Postal Code; Street;Photo;Home Page;Garage Latitude;Garage Longitude
+1;Google;Larry Page & Sergey Brin;Mountain View;USA;CA 94043;1600 Amphitheatre Pkwy;http://interviewsummary.com/wp-content/uploads/2013/07/larry-page-and-sergey-brin-of-google-620x400.jpg;http://google.com;37.457674;-122.163452
+2;Apple;Steve Jobs & Steve Wozniak;Cupertino;USA;CA 95014;1 Infinite Loop;http://i.dailymail.co.uk/i/pix/2013/02/08/article-2275512-172E13BB000005DC-732_634x505.jpg;http://apple.com;37.3403188;-122.0581469
+3;Microsoft;Bill Gates;Redmond;USA;WA 98052-7329;One Microsoft Way;http://i.dailymail.co.uk/i/pix/2011/06/10/article-2001697-0C816FEB00000578-38_306x423.jpg;http://microsoft.com;37.472189;-122.190191</textarea> -->
+<!-- 
+<textarea name="csv" id="csv" cols="30" rows="10">Id	Company Name	Founder	City	Country	Postal Code	 Street	Photo	Home Page	Garage Latitude	Garage Longitude
+1	Google	Larry Page & Sergey Brin	Mountain View	USA	CA 94043	1600 Amphitheatre Pkwy	http://interviewsummary.com/wp-content/uploads/2013/07/larry-page-and-sergey-brin-of-google-620x400.jpg	http://google.com	37.457674	-122.163452
+2	Apple	Steve Jobs & Steve Wozniak	Cupertino	USA	CA 95014	1 Infinite Loop	http://i.dailymail.co.uk/i/pix/2013/02/08/article-2275512-172E13BB000005DC-732_634x505.jpg	http://apple.com	37.3403188	-122.0581469
+3	Microsoft	Bill Gates	Redmond	USA	WA 98052-7329	One Microsoft Way	http://i.dailymail.co.uk/i/pix/2011/06/10/article-2001697-0C816FEB00000578-38_306x423.jpg	http://microsoft.com	37.472189	-122.190191</textarea> -->
+		    <!-- <fieldset>
 		        <label for="txtFileUpload"><legend>Upload your CSV File</legend></label>
 		            <input type="file" name="File Upload" id="txtFileUpload" accept=".csv" class="invisible" ®/>
-		   </fieldset>
+		   </fieldset> -->
 		</div>
+		   <a href="#" class="btn btn-default parse-csv">Render!</a>
+	</div>
+</div>
+		
 		<div class="sort">
 			<table id="table-data" class="table sortable">
 				
 			</table>
 		</div>
-		<div id="map" class=""></div>
+		<div id="map" class="hidden	"></div>
 
 
     

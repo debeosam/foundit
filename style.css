@@ -1,4 +1,9 @@
 @import url('css/bootstrap.min.css');
+
+body {
+    font-size: 100%;
+}
+
 #map{
     width: 89%;
     height: 500px;
@@ -10,12 +15,7 @@
 }
 
 .fileUpload {
-	height: 90%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
+    margin-bottom: 30px;	
 }
 
 legend {
@@ -45,25 +45,81 @@ legend:hover {
     text-decoration: underline;
 }
 
+h1 {
+    font-weight: 900;
+    letter-spacing: -2px;
+    font-size: 6em;
+    font-family: Arial;
+    color: rgba(0,0,0,0.84);
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-size: 2.4em;
+    font-weight: 900;
+    font-family: Arial;
+    color: rgba(0,0,0,0.57);
+    letter-spacing: -1px;
+}
+
+p {
+    font-size: 1.8em;
+    
+}
 
 #table-data {
-	height: 100%;
-	width: 100%;	
-	font-size: .8em;
+    height: 100%;
+    width: 100%;
+    font-size: 1em;
+    margin: 50px 0;
+    color: rgba(0,0,0,0.84);
+}
+
+#table-data tr:nth-of-type(2n+2) {
+    background-color: whitesmoke;
+}
+
+#table-data tr:hover {
+    background-color: lightgray;
+}
+
+.map-label {
+    margin-right: 5px;
 }
 
 .image {
-	height: 50px;
-	width: auto;
+	height: 100%;
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
 }
 
-@media screen and (max-width: 480px) {
-	thead {
-		display: none;
-	}
-	td:before {
-		content: attr(thdata) ": ";
-		display: block;
-		
-	}
+.table>thead>tr>th, 
+.table>tbody>tr>th, 
+.table>tfoot>tr>th, 
+.table>thead>tr>td, 
+.table>tbody>tr>td, 
+.table>tfoot>tr>td {
+    vertical-align: middle;
+    padding: 2px;
+}
+
+.image img {
+    height: auto;
+    width: 100px;
+}
+
+.hidden {
+    display: none;
+}
+
+.dropdown {
+    border: 1px solid rgba(0,0,0,0.24);
+    background-color: white;
+    width: 60px;
+}
+
+.separator-select {
+    margin-top: 30px;
 }

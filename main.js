@@ -1,178 +1,131 @@
+        var rows,
+            headers,
+            dataObject = {};
         function parseCSV(table, csvInput) {
             var i,
                 csv,
-                rows,
-                headers,
-                dataObject = {};
+                separator;
+
+            separator = $('#chooseSeparator :selected').text()
             csv = $(csvInput).val();
             csv = csv.replace(/\r\n/g, "\n");
             csv = csv.replace(/\r/g, "\n");
             rows = csv.split("\n");          
             headers = rows.shift();
-            headers = headers.split(',');
-            debugger
+            headers = headers.split(separator);
+            
 
             for (k = 0; k < rows.length; k++) {
-                var r = rows[k] 
-                r = r.split(',');
+                var r = rows[k]; 
+                r = r.split(separator);
+                dataObject[k] = {};
                 for (i = 0; i < headers.length; i++) {
-                    dataObject[headers[i]] = r[i];
+                    dataObject[k][headers[i]] = r[i];
                 }
             }
 
-
-
-            renderHeaders(headers, table);
-            renderTableData(rows, table)
+            renderHeaders(table);
+            renderTableData(table)
         }
 
-        function renderHeaders(headers, table) {
+        function renderHeaders(table) {
             var thead = '', i;
             thead += '<thead><tr>'
             for (i = 0; i < headers.length; i++) {
-                thead += '<th>' + headers[i] + '</th>';
+                thead += '<th><input type="radio" name="map-label" class="map-label" id="' + headers[i] + '">' + headers[i] + '</th>';
             };
-            thead += '</tr></thead>';
+            thead += '<th>Hide</th></tr></thead>';
             $(table).append(thead);
         }
 
-        function renderTableData(data, table) {
+        function renderTableData(table) {
             var tbody = '', row, i;
-            debugger
+            
             
 
             tbody = '<tbody>';
-            for (i = 0; i < data.length; i++) {
-                row = renderRow(data[i]);    
-                tbody += row;
-            }
+            $.each(dataObject, function(key, value){ 
+                tbody += renderRow(dataObject[key]);
+            })
             tbody += '</tbody>';
 
             $(table).append(tbody);
+            generateMap();
+            setLabels();
+        }
+
+        var markers = [];
+        function generateMap() {
+            var mapDiv = document.getElementById('map'),
+                map = new google.maps.Map(mapDiv, {
+                        zoom: 8
+                });
+
+            $.each(dataObject, function(key, value) {
+
+                var myLatlng = new google.maps.LatLng(value['Garage Latitude'],value['Garage Longitude']);
+                map.setCenter(myLatlng);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    label: value[$('.active-label').attr('id')]
+                });
+                markers.push(marker);
+
+            });
+            
+            setMarkers(markers, map);
+            
+            $('#map').removeClass('hidden');
+        }
+
+        function setMarkers(markers, map) {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+        }
+
+        function removeMarkers() {    
+            setMarkers(markers, null);
         }
 
         function renderRow(row) {
             var i, tr = '';
             
-            row = row.split(',');
-
             tr += '<tr>';
 
-            for (i = 0; i < row.length; i++) {
-                tr += '<td>' + row[i] + '</td>';
-            }
-
+            $.each(row, function(key, value) {
+                tr += '<td>';
+                if (key == 'Photo') {
+                    tr += '<div class="image"><img src="' + value + '"></div>';
+                } else if (key == 'Home Page') {
+                    tr += '<a href="' + value + '">' + value + '</a>';
+                } else {
+                    tr += value;  
+                } 
+                tr += '</td>';
+                
+            });
+            tr += '<td><input type="checkbox" id="' + row['Id'] + '" class="hide-garage"></td>';
             tr += '</tr>';
             return tr;
         }
 
+        function setLabels() {
+            $('.map-label').on('click', function() {
+                $('.map-label:not(:checked)').removeClass('active-label');
+                $('.map-label:checked').addClass('active-label')
+                removeMarkers();
+                generateMap();
+
+            });
+        }
+
         $(document).ready(function() {
-                var garageList = [],
-                    locations = [];
-                // The event listener for the file upload
-                document.getElementById('txtFileUpload').addEventListener('change', upload, false);
-
-                // Method that checks that the browser supports the HTML5 File API
-                function browserSupportFileUpload() {
-                    var isCompatible = false;
-                    if (window.File && window.FileReader && window.FileList && window.Blob) {
-                    isCompatible = true;
-                    }
-                    return isCompatible;
-                }
-
-                // Method that reads and processes the selected file
-                function upload(evt) {
-                if (!browserSupportFileUpload()) {
-                    alert('The File APIs are not fully supported in this browser!');
-                    } else {
-                        var data = new Array();
-                        var file = evt.target.files[0];
-                        var reader = new FileReader();
-                        reader.readAsText(file);
-                        reader.onload = function(event) {
-                            var csvData = event.target.result,
-                            arrayList = csvData.split('\n'),
-                            keysList = arrayList.shift(),
-                            keysList = keysList.split(','); 
-
-                            // create array of objects
-                            for (var k = 0; k < arrayList.length; k++) {
-                                var rowData = arrayList[k].split(',');
-                                var Garage = new Object();
-                                for ( var i = 0 ; i < keysList.length; i++) { 
-                                    Garage[keysList[i]] = rowData[i];
-                                    
-                                }
-                                var coordinates = [parseFloat(Garage['Garage Latitude']), parseFloat(Garage['Garage Longitude'])];
-                                locations[k] = coordinates;
-                                garageList.push(Garage);
-                            }
-                
-                            dataToHtml(keysList, garageList);
-                            var mapDiv = document.getElementById('map'),
-                                map = new google.maps.Map(mapDiv, {
-                                            center: {
-                                                        lat: locations[0][0], 
-                                                        lng: locations[0][1]
-                                                    },
-                                            zoom: 8
-                                });
-                            for(var i = 0; i < locations.length; i++) {
-
-                                debugger
-                                var myLatlng = new google.maps.LatLng(locations[i][0],locations[i][1]);
-                                var marker = new google.maps.Marker({
-                                    position: myLatlng,
-                                    title:"Hello World!"
-                                });
-                                marker.setMap(map);
-                            }
-                    };
-                    
+                $('.parse-csv').on('click', function() {
+                    parseCSV('#table-data', '#csv');
                     $('html, body').animate({
                         scrollTop: $("#table-data").offset().top
                     }, 1000);
-
-                            // console.log(arrayList); 
-                }
-                reader.onerror = function() {   
-                    alert('Unable to read ' + file.fileName);
-                };
-            }
-
-            function headersToHtml(tableHeaders) {
-                var htmlString = '<thead><tr>';
-                for(var i = 0; i < tableHeaders.length; i++) {
-                    htmlString += '<th>' + tableHeaders[i] + '</th>';
-                }
-                htmlString += '</tr></thead>';
-                $('.table').append(htmlString);
-            }
-
-            function dataToHtml(tableHeaders, tableData){
-                headersToHtml(tableHeaders);
-                var htmlString = '<tbody>';
-                for (var i = 0; i < tableData.length; i++) {
-                    htmlString += '<tr>';
-                    for (var k = 0; k < tableHeaders.length; k++) {
-                        htmlString += '<td thdata="' + tableHeaders[k] + '">';
-                        if (tableHeaders[k] == 'Photo') {
-                            htmlString += '<img src="' +    tableData[i][tableHeaders[k]] + '" class="image"></td>';
-                        } else if (tableHeaders[k] == 'Home Page') {
-                            
-                            htmlString += '<a href="' + tableData[i][tableHeaders[k]] + '">' + tableData[i][tableHeaders[k]] + '</a></td>';
-                        } else {
-                            htmlString += tableData[i][tableHeaders[k]] + '</td>';
-                        } 
-
-                    }
-                    htmlString += '</tr>';
-                }
-
-                htmlString += '</tbody>';
-                $('.table').append(htmlString);
-                $('#table-data').tablesorter();
-            }
-
+                });
+                
     });
